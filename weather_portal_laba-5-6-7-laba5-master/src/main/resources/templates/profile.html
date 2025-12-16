@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+</head>
+<body>
+<h1>Добро пожаловать, <span th:text="${user.username}">User</span>!</h1>
+
+<p>Роль: <span th:text="${user.role}">ROLE_USER</span></p>
+<p>Дата регистрации: <span th:text="${user.createdAt}">Дата</span></p>
+<p>Количество посещений: <span th:text="${visitCount}">0</span></p>
+<p>Время сервера: <span th:text="${serverTime}">00:00</span></p>
+
+<h3>Изменить логин</h3>
+<form action="/profile/username" method="post">
+    <input type="text" name="username"
+           th:value="${user.username}"
+           required minlength="3"/>
+    <button type="submit">Сохранить</button>
+</form>
+<form action="/profile/password" method="post">
+    <h3>Сменить пароль</h3>
+
+    <input type="password" name="oldPassword" placeholder="Старый пароль" required />
+    <br>
+
+    <input type="password" name="newPassword" placeholder="Новый пароль" required />
+    <br>
+
+    <input type="password" name="confirmPassword" placeholder="Повторите новый пароль" required />
+    <br>
+
+    <button type="submit">Сохранить пароль</button>
+</form>
+
+<p th:if="${param.passwordChanged}" style="color: green;">
+    Пароль успешно изменён. Войдите заново.
+</p>
+
+<p th:if="${param.passwordError}" style="color: red;">
+    Ошибка при смене пароля
+</p>
+
+
+<!-- Отображение текущего фото -->
+<div>
+    <h3>Ваше фото:</h3>
+    <img th:if="${user.photoFilename != null}" th:src="@{'/uploads/' + ${user.photoFilename}}"
+         alt="Фото пользователя" width="200"/>
+    <p th:if="${user.photoFilename == null}">Фото ещё не загружено</p>
+</div>
+
+<!-- Форма загрузки нового фото -->
+<div>
+    <h3>Загрузить новое фото:</h3>
+    <form action="/profile/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required/>
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+<!-- Кнопка выхода -->
+<div>
+    <form action="/logout" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+</div>
+
+</body>
+</html>
