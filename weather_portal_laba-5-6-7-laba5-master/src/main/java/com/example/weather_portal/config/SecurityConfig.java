@@ -52,9 +52,6 @@ public class SecurityConfig {
                                 "/photo/**"
                         ).permitAll()
 
-                        // админка топлива
-                        .requestMatchers("/admin/fuel/**").hasRole("ADMIN")
-
                         // полный доступ для админа
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
@@ -67,6 +64,7 @@ public class SecurityConfig {
                         // всё остальное требует авторизации
                         .anyRequest().authenticated()
                 )
+
 
                 .formLogin(form -> form
                         .loginPage("/login")
