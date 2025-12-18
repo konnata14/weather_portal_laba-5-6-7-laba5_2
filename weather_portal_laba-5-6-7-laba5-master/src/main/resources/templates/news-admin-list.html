@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новости - модератор</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Новости (модератор)</h1>
+
+<a th:href="@{/moderator/news/new}">Добавить новость</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Заголовок</th>
+        <th>Дата</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="n : ${newsList}">
+        <td th:text="${n.title}">Заголовок</td>
+        <td th:text="${n.createdAt}">Дата</td>
+        <td>
+            <a th:href="@{/moderator/news/edit/{id}(id=${n.id})}">Редактировать</a>
+            <a th:href="@{/moderator/news/delete/{id}(id=${n.id})}"
+               onclick="return confirm('Удалить эту новость?')">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/profile">Вернуться в профиль</a>
+</body>
+</html>

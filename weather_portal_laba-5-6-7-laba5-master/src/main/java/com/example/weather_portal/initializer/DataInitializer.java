@@ -7,6 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.weather_portal.repository.FuelRepository;
+import com.example.weather_portal.model.Fuel;
+
+
 
 @Configuration
 public class DataInitializer {
@@ -43,4 +47,33 @@ public class DataInitializer {
             }
         };
     }
+    @Bean
+    CommandLineRunner initFuel(FuelRepository fuelRepo) {
+        return args -> {
+
+            if (fuelRepo.count() == 0) {
+
+                Fuel f92 = new Fuel();
+                f92.setName("АИ-92");
+                f92.setPrice(50.0);
+                f92.setQuantity(5000.0);
+
+                Fuel f95 = new Fuel();
+                f95.setName("АИ-95");
+                f95.setPrice(55.0);
+                f95.setQuantity(4000.0);
+
+                Fuel gas = new Fuel();
+                gas.setName("Газ");
+                gas.setPrice(30.0);
+                gas.setQuantity(3000.0);
+
+                fuelRepo.save(f92);
+                fuelRepo.save(f95);
+                fuelRepo.save(gas);
+            }
+        };
+    }
+
+
 }

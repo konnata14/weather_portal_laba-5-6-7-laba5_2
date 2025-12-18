@@ -37,19 +37,36 @@ public class SecurityConfig {
                 .authenticationProvider(authProvider())
 
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/css/**",
-                        "/js/**",
-                        "/images/**",
-                        "/register",
-                        "/h2-console/**",
-                        "/uploads/**",
-                        "/photo/**"
-                ).permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/moderator/**").hasRole("MODERATOR")
-                .anyRequest().authenticated()
-        )
+                        // публичные ресурсы
+                        .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/register",
+                                "/login",
+                                "/fuel",
+                                "/fuel/**",
+                                "/news",
+                                "/h2-console/**",
+                                "/uploads/**",
+                                "/photo/**"
+                        ).permitAll()
+
+                        // админка топлива
+                        .requestMatchers("/admin/fuel/**").hasRole("ADMIN")
+
+                        // полный доступ для админа
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // модераторские страницы новостей
+                        .requestMatchers("/moderator/news/**").hasRole("MODERATOR")
+
+                        // доступ пользователей к добавлению топлива
+                        .requestMatchers("/user/fuel/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+
+                        // всё остальное требует авторизации
+                        .anyRequest().authenticated()
+                )
 
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -65,9 +82,7 @@ public class SecurityConfig {
 
                 .csrf(csrf -> csrf.disable())
 
-                .headers(headers -> headers.frameOptions(
-                        frame -> frame.sameOrigin()
-                ));
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();
     }

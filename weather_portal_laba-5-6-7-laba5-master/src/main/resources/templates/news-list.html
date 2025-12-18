@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новости</title>
+</head>
+<body>
+<h1>Новости</h1>
+
+<div th:each="n : ${newsList}">
+    <h3 th:text="${n.title}"></h3>
+    <p th:text="${n.content}"></p>
+    <small th:text="${n.createdAt}"></small>
+    <hr>
+</div>
+
+<a href="/">⬅ Вернуться на главную</a>
+</body>
+</html>

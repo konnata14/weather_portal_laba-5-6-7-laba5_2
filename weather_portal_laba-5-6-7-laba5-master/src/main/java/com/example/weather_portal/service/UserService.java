@@ -48,6 +48,14 @@ public class UserService {
         user.setPassword(pwEncoder.encode(newPassword));
         userRepository.save(user);
     }
+    public void changePassword(User user, String newPassword) {
+        if (!PasswordValidator.isValid(newPassword)) {
+            throw new RuntimeException("Слабый пароль");
+        }
+        user.setPassword(pwEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
 
     public void changeUsername(User user, String newUsername) {
 

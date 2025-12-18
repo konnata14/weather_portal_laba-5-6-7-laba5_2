@@ -33,4 +33,8 @@ public class Fuel {
     public void updateTime() {
         updatedAt = LocalDateTime.now();
     }
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
 }

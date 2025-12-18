@@ -5,25 +5,35 @@ import com.example.weather_portal.repository.FuelRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FuelService {
 
-    private final FuelRepository repo;
+    private final FuelRepository fuelRepo;
 
-    public FuelService(FuelRepository repo) {
-        this.repo = repo;
+    public FuelService(FuelRepository fuelRepo) {
+        this.fuelRepo = fuelRepo;
     }
 
-    public List<Fuel> getAllFuel() {
-        return repo.findAll();
+    // Получить все топлива
+    public List<Fuel> findAll() {
+        return fuelRepo.findAll();
     }
 
-    public void updateQuantity(String name, Double delta) {
-        Fuel fuel = repo.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Топливо не найдено"));
+    // Найти топливо по ID
+    public Fuel findById(Long id) {
+        return fuelRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fuel not found"));
+    }
 
-        fuel.setQuantity(fuel.getQuantity() + delta);
-        repo.save(fuel);
+    // Сохранить или обновить топливо
+    public Fuel save(Fuel fuel) {
+        return fuelRepo.save(fuel);
+    }
+
+    // Удалить топливо
+    public void deleteById(Long id) {
+        fuelRepo.deleteById(id);
     }
 }
