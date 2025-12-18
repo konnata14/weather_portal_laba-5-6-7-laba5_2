@@ -76,6 +76,7 @@ public class ProfileController {
             visitService.increment(user);
             session.setAttribute("profileViewed", true);
         }
+
         model.addAttribute("user", user);
         model.addAttribute("visitCount", visitService.getCounterFor(user).getCount());
         model.addAttribute("serverTime", java.time.LocalDateTime.now().withNano(0));
