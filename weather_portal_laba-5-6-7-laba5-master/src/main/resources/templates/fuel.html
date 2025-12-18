@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Заправка</title>
+</head>
+<body>
+<h1>Информация о топливе</h1>
+<table border="1">
+    <tr>
+        <th>Топливо</th>
+        <th>Цена</th>
+        <th>Остаток (л)</th>
+    </tr>
+    <tr th:each="f : ${fuelList}">
+        <td th:text="${f.name}"></td>
+        <td th:text="${f.price}"></td>
+        <td th:text="${f.quantity}"></td>
+    </tr>
+</table>
+</body>
+</html>
