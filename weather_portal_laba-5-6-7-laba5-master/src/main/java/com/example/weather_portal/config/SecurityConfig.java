@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // модераторские страницы новостей
-                        .requestMatchers("/moderator/news/**").hasRole("MODERATOR")
+                        .requestMatchers("/moderator/news/**").hasAnyRole("MODERATOR", "ADMIN")
 
                         // доступ пользователей к добавлению топлива
                         .requestMatchers("/user/fuel/**").hasAnyRole("USER", "MODERATOR", "ADMIN")

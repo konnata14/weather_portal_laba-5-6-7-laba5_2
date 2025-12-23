@@ -19,8 +19,9 @@ public class AdminFuelController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("fuelList", fuelRepository.findAll());
-        return "fuel-admin-list";
+        return "fuel-admin-list"; // шаблон должен быть в src/main/resources/templates/fuel-admin-list.html
     }
+
 
     @GetMapping("/new")
     public String newFuel(Model model) {
@@ -38,9 +39,25 @@ public class AdminFuelController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute Fuel fuel) {
-        fuelRepository.save(fuel);
+        Fuel existingFuel;
+
+        if (fuel.getId() != null) {
+            existingFuel = fuelRepository.findById(fuel.getId()).orElseThrow();
+            existingFuel.setName(fuel.getName());
+            existingFuel.setPrice(fuel.getPrice());
+            existingFuel.setQuantity(fuel.getQuantity());
+            // Не трогаем createdBy
+            fuelRepository.save(existingFuel);
+        } else {
+            // создание нового топлива
+            fuelRepository.save(fuel);
+        }
+
+        // 🔹 Перенаправление на страницу списка
         return "redirect:/admin/fuel";
     }
+
+
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
