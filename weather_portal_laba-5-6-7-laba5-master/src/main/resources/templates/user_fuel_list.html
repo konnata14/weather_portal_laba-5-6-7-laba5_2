@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои товары</title>
+</head>
+<body>
+
+<h1>Мои товары (топливо)</h1>
+
+<p>
+    <a th:href="@{/}">На главную</a>
+</p>
+
+<p>
+    <a th:href="@{/user/fuel/new}">Добавить товар</a>
+</p>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Название</th>
+        <th>Цена за литр</th>
+        <th>Количество (л)</th>
+        <th>Обновлено</th>
+        <th>Действия</th>
+    </tr>
+    <tr th:each="f : ${fuels}">
+        <td th:text="${f.name}">Название</td>
+        <td th:text="${f.price}">0</td>
+        <td th:text="${f.quantity}">0</td>
+        <td th:text="${f.updatedAt}">дата</td>
+        <td>
+            <a th:href="@{'/user/fuel/edit/' + ${f.id}}">Редактировать</a>
+            |
+            <a th:href="@{'/user/fuel/delete/' + ${f.id}}"
+               onclick="return confirm('Удалить товар?');">Удалить</a>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

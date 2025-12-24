@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${fuel.id} == null ? 'Новый товар' : 'Редактирование товара'">
+        Товар
+    </title>
+</head>
+<body>
+
+<h1 th:text="${fuel.id} == null ? 'Новый товар' : 'Редактирование товара'">
+    Товар
+</h1>
+
+<p>
+    <a th:href="@{/user/fuel}">К списку товаров</a>
+</p>
+
+<form th:action="@{/user/fuel/save}" th:object="${fuel}" method="post">
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <div>
+        <label>Название:
+            <input type="text" th:field="*{name}">
+        </label>
+    </div>
+
+    <div>
+        <label>Цена за литр:
+            <input type="number" step="0.01" th:field="*{price}">
+        </label>
+    </div>
+
+    <div>
+        <label>Количество (л):
+            <input type="number" step="0.01" th:field="*{quantity}">
+        </label>
+    </div>
+
+    <button type="submit">Сохранить</button>
+</form>
+
+</body>
+</html>

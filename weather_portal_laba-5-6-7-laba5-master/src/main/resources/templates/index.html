@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+
+<h1>Портал АЗС</h1>
+
+<!-- Навигация для неавторизованных -->
+<nav sec:authorize="isAnonymous()">
+    <ul>
+        <li><a th:href="@{/login}">Вход</a></li>
+        <li><a th:href="@{/register}">Регистрация</a></li>
+    </ul>
+</nav>
+
+<!-- Навигация для авторизованных -->
+<nav sec:authorize="isAuthenticated()">
+    <ul>
+        <li><a th:href="@{/user/fuel}">Мои товары (топливо)</a></li>
+        <li><a th:href="@{/profile}">Профиль пользователя</a></li>
+        <li><a th:href="@{/logout}">Выйти</a></li>
+    </ul>
+</nav>
+
+<hr/>
+
+<p>
+    Время на сервере:
+    <span th:text="${serverTime}">00.00.0000 00:00:00</span>
+</p>
+
+<!-- КАТАЛОГ: таблица того же формата, что и "Мои товары", но без колонки Действия -->
+<section th:if="${catalogFuels != null}">
+    <h2>Каталог</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Название</th>
+            <th>Цена за литр</th>
+            <th>Количество (л)</th>
+            <th>Обновлено</th>
+        </tr>
+        <tr th:each="f : ${catalogFuels}">
+            <td th:text="${f.name}">Название</td>
+            <td th:text="${f.price}">0</td>
+            <td th:text="${f.quantity}">0</td>
+            <td th:text="${f.updatedAt}">дата</td>
+        </tr>
+    </table>
+</section>
+
+<!-- Новости -->
+<section th:if="${newsItems != null}">
+    <h2>Новости</h2>
+    <ul>
+        <li th:each="n : ${newsItems}">
+            <strong th:text="${n.title}">Заголовок</strong>
+            <span> — </span>
+            <span th:text="${n.content}">Текст новости</span>
+        </li>
+    </ul>
+</section>
+
+</body>
+</html>
