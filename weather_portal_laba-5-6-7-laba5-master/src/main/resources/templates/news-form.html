@@ -1,25 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Добавить/Редактировать новость</title>
+    <title th:text="${news.id} == null ? 'Новая новость' : 'Редактирование новости'">
+        Новость
+    </title>
 </head>
 <body>
-<h1 th:text="${news.id != null} ? 'Редактировать новость' : 'Добавить новость'"></h1>
+
+<h1 th:text="${news.id} == null ? 'Новая новость' : 'Редактирование новости'">Новость</h1>
+
+<p><a th:href="@{/moderator/news}">К списку новостей</a></p>
 
 <form th:action="@{/moderator/news/save}" th:object="${news}" method="post">
+
     <input type="hidden" th:field="*{id}"/>
+
     <div>
-        <label>Заголовок:</label>
-        <input type="text" th:field="*{title}" required/>
+        <label>Заголовок:
+            <input type="text" th:field="*{title}">
+        </label>
     </div>
+
     <div>
-        <label>Содержание:</label>
-        <textarea th:field="*{content}" required></textarea>
+        <label>Текст:
+            <textarea th:field="*{content}" rows="5" cols="60"></textarea>
+        </label>
     </div>
+
     <button type="submit">Сохранить</button>
 </form>
 
-<a th:href="@{/moderator/news}">Назад к списку новостей</a>
 </body>
 </html>

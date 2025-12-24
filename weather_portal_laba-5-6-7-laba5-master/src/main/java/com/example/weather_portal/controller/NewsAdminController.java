@@ -16,35 +16,35 @@ public class NewsAdminController {
         this.newsRepository = newsRepository;
     }
 
-    // Список новостей с кнопками Редактировать/Удалить/Добавить
+    // список новостей с кнопками
     @GetMapping
     public String adminList(Model model) {
         model.addAttribute("newsList", newsRepository.findAll());
         return "news-admin-list";
     }
 
-    // Форма добавления новой новости
+    // форма добавления новой
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("news", new News());
         return "news-form";
     }
 
-    // Форма редактирования существующей новости
+    // форма редактирования
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("news", newsRepository.findById(id).orElseThrow());
         return "news-form";
     }
 
-    // Сохранение новости (новая или редактируемая)
+    // сохранение
     @PostMapping("/save")
     public String save(@ModelAttribute News news) {
         newsRepository.save(news);
         return "redirect:/moderator/news";
     }
 
-    // Удаление новости
+    // удаление
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         newsRepository.deleteById(id);

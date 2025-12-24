@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
+
     private final UserService userService;
     private final UserRepository userRepository;
 
@@ -18,7 +19,9 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String registerForm() {
+    public String registerForm(Model model) {
+        // нужен для th:object="${user}" в register.html
+        model.addAttribute("user", new User());
         return "register";
     }
 
@@ -31,11 +34,15 @@ public class AuthController {
             userService.register(username, password, role);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            // чтобы при повторном показе формы снова был user
+            model.addAttribute("user", new User());
             return "register";
         }
         return "redirect:/login";
     }
 
     @GetMapping("/login")
-    public String loginPage() { return "login"; }
+    public String loginPage() {
+        return "login";
+    }
 }

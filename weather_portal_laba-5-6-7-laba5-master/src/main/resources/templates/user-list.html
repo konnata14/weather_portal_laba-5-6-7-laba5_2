@@ -1,33 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Список пользователей</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Пользователи (админ)</title>
 </head>
 <body>
-<h1>Пользователи</h1>
 
-<a th:href="@{/admin/users/new}">Добавить пользователя</a>
-<br><br>
+<h1>Пользователи (администратор)</h1>
 
-<table border="1">
+<p>
+    <a th:href="@{/}">На главную</a> |
+    <a th:href="@{/admin/users/new}">Добавить пользователя</a>
+</p>
+
+<table border="1" cellpadding="5">
     <tr>
         <th>ID</th>
-        <th>Имя</th>
+        <th>Логин</th>
         <th>Роль</th>
         <th>Действия</th>
     </tr>
     <tr th:each="u : ${users}">
-        <td th:text="${u.id}"></td>
-        <td th:text="${u.username}"></td>
-        <td th:text="${u.role}"></td>
+        <td th:text="${u.id}">1</td>
+        <td th:text="${u.username}">user</td>
+        <td th:text="${u.role}">ROLE_USER</td>
         <td>
-            <a th:href="@{'/admin/users/edit/' + ${u.id}}">Редактировать</a> |
+            <a th:href="@{'/admin/users/edit/' + ${u.id}}">Редактировать</a>
+            |
             <a th:href="@{'/admin/users/delete/' + ${u.id}}"
-               onclick="return confirm('Удалить пользователя?')">Удалить</a>
+               onclick="return confirm('Удалить пользователя?');">Удалить</a>
         </td>
     </tr>
 </table>
+
 </body>
 </html>

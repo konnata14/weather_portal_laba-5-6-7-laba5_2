@@ -1,40 +1,73 @@
 package com.example.weather_portal.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
-@Data
 @Entity
-@Table(name = "fuel")
 public class Fuel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Название топлива (АИ-95, ДТ, Газ)
-    @Column(nullable = false, unique = true)
     private String name;
 
-    // Цена за литр
-    @Column(nullable = false)
     private Double price;
 
-    // Количество в литрах
-    @Column(nullable = false)
     private Double quantity;
 
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    @PreUpdate
-    public void updateTime() {
-        updatedAt = LocalDateTime.now();
-    }
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    private User createdBy;
+    // новое поле владельца товара
+    private String ownerUsername;
 
+    // геттеры/сеттеры
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
 }

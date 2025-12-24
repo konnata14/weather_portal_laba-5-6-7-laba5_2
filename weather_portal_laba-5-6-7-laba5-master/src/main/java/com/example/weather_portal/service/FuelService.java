@@ -5,35 +5,40 @@ import com.example.weather_portal.repository.FuelRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FuelService {
 
-    private final FuelRepository fuelRepo;
+    private final FuelRepository fuelRepository;
 
-    public FuelService(FuelRepository fuelRepo) {
-        this.fuelRepo = fuelRepo;
+    public FuelService(FuelRepository fuelRepository) {
+        this.fuelRepository = fuelRepository;
     }
 
-    // Получить все топлива
-    public List<Fuel> findAll() {
-        return fuelRepo.findAll();
+    // Товары конкретного пользователя (для "Моих товаров")
+    public List<Fuel> findByUsername(String username) {
+        return fuelRepository.findByOwnerUsername(username);
     }
 
-    // Найти топливо по ID
-    public Fuel findById(Long id) {
-        return fuelRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Fuel not found"));
+    // Один товар по id
+    public Fuel findForUser(Long fuelId, String username) {
+        return fuelRepository.findById(fuelId)
+                .orElseThrow(() -> new RuntimeException("Товар не найден: " + fuelId));
     }
 
-    // Сохранить или обновить топливо
-    public Fuel save(Fuel fuel) {
-        return fuelRepo.save(fuel);
+    // Сохранить/обновить товар пользователя
+    public void saveForUser(Fuel fuel, String username) {
+        fuel.setOwnerUsername(username);
+        fuelRepository.save(fuel);
     }
 
-    // Удалить топливо
-    public void deleteById(Long id) {
-        fuelRepo.deleteById(id);
+    // Удалить товар пользователя
+    public void deleteForUser(Long fuelId, String username) {
+        fuelRepository.deleteById(fuelId);
+    }
+
+    // ВСЕ товары для каталога (главная)
+    public List<Fuel> findAllForCatalog() {
+        return fuelRepository.findAll();
     }
 }

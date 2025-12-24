@@ -1,36 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Форма пользователя</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title th:text="${user.id} == null ? 'Новый пользователь' : 'Редактирование пользователя'">
+        Пользователь
+    </title>
 </head>
 <body>
-<h1 th:text="${user.id} != null ? 'Редактировать пользователя' : 'Добавить пользователя'"></h1>
+
+<h1 th:text="${user.id} == null ? 'Новый пользователь' : 'Редактирование пользователя'">
+    Пользователь
+</h1>
+
+<p><a th:href="@{/admin/users}">К списку пользователей</a></p>
 
 <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
 
-    <!-- 🔥 ВАЖНО -->
     <input type="hidden" th:field="*{id}"/>
 
-    <label>Ник:</label>
-    <input type="text" th:field="*{username}" required/><br/><br/>
+    <div>
+        <label>Логин:
+            <input type="text" th:field="*{username}">
+        </label>
+    </div>
 
-    <label>Пароль (оставьте пустым, если не менять):</label>
-    <input type="password" th:field="*{password}"/><br/><br/>
+    <div>
+        <label>Пароль:
+            <input type="password" th:field="*{password}">
+        </label>
+        <p th:if="${user.id != null}">Оставь пустым, если не хочешь менять пароль.</p>
+    </div>
 
-    <label>Роль:</label>
-    <select th:field="*{role}">
-        <option th:each="r : ${roles}"
-                th:value="${r}"
-                th:text="${r}">
-        </option>
-    </select><br/><br/>
+    <div>
+        <label>Роль:
+            <select th:field="*{role}">
+                <option th:each="r : ${roles}"
+                        th:value="${r}"
+                        th:text="${r}">ROLE_USER</option>
+            </select>
+        </label>
+    </div>
 
     <button type="submit">Сохранить</button>
 </form>
 
-
-<a th:href="@{/admin/users}">Назад к списку пользователей</a>
 </body>
 </html>

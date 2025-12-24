@@ -22,12 +22,14 @@ public class AdminUserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // список пользователей
     @GetMapping
     public String listUsers(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        return "user-list"; // ✅ правильное имя шаблона
+        return "user-list";
     }
 
+    // форма создания нового пользователя
     @GetMapping("/new")
     public String newUserForm(Model model) {
         model.addAttribute("user", new User());
@@ -35,34 +37,35 @@ public class AdminUserController {
         return "user-form";
     }
 
+    // форма редактирования
     @GetMapping("/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElseThrow();
-        user.setPassword("");
+        user.setPassword(""); // не показываем настоящий пароль
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "user-form";
     }
 
+    // создание / редактирование
     @PostMapping("/save")
     public String saveUser(@ModelAttribute User formUser) {
 
         User user;
 
-        // --- редактирование ---
         if (formUser.getId() != null) {
+            // редактирование
             user = userRepository.findById(formUser.getId()).orElseThrow();
 
             user.setUsername(formUser.getUsername());
             user.setRole(formUser.getRole());
 
-            // если пароль введён — кодируем
             if (formUser.getPassword() != null && !formUser.getPassword().isBlank()) {
                 user.setPassword(passwordEncoder.encode(formUser.getPassword()));
             }
 
-        }
-        else {
+        } else {
+            // создание
             user = new User();
             user.setUsername(formUser.getUsername());
             user.setRole(formUser.getRole());
@@ -78,6 +81,7 @@ public class AdminUserController {
         return "redirect:/admin/users";
     }
 
+    // удаление пользователя (запрет удаления себя)
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, Authentication auth) {
 

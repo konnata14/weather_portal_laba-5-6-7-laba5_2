@@ -4,30 +4,41 @@ import com.example.weather_portal.model.News;
 import com.example.weather_portal.repository.NewsRepository;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 
 @Service
 public class NewsService {
 
-    private final NewsRepository repo;
+    private final NewsRepository newsRepository;
 
-    public NewsService(NewsRepository repo) {
-        this.repo = repo;
+    public NewsService(NewsRepository newsRepository) {
+        this.newsRepository = newsRepository;
     }
 
-    public List<News> getAll() {
-        return repo.findAll();
+    public List<News> findAll() {
+        return newsRepository.findAll();
     }
 
-    public News getById(Long id) {
-        return repo.findById(id).orElseThrow();
+    public List<News> findLatest() {
+        return newsRepository.findAll();
     }
 
-    public void save(News news) {
-        repo.save(news);
-    }
+    @PostConstruct
+    public void createTestNews() {
+        if (newsRepository.count() > 0) {
+            return;
+        }
 
-    public void delete(Long id) {
-        repo.deleteById(id);
+        News n1 = new News();
+        n1.setTitle("Добро пожаловать на портал");
+        n1.setContent("Это тестовая новость №1.");
+
+        News n2 = new News();
+        n2.setTitle("Акции и скидки");
+        n2.setContent("Это тестовая новость №2.");
+
+        newsRepository.save(n1);
+        newsRepository.save(n2);
     }
 }
